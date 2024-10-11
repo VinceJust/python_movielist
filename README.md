@@ -8,12 +8,12 @@ ____
 ### Datenbank erstellung
 
 Die Datenbank muss erstellt werden mit den folgenden Tabellen:
-id int primary key auto_increment
-title varchar(128) not null
-director varchar(32) not null
-genre varchar (32) not null
-releaseyear int not null
-rating float not null
+* id int primary key auto_increment
+* title varchar(128) not null
+* director varchar(32) not null
+* genre varchar (32) not null
+* releaseyear int not null
+* rating float not null
 
 Hier ist ansonsten auch ein SQL Script um die Datenbank einfach zu erstellen und zu verwenden. Dies kann auch auf einem anderen Server oder einer anderen virtuellen Maschine passieren.
 ```sql
