@@ -1,0 +1,6 @@
+# Verzeichnisse
+venv/
+__pycache__/
+
+# Python
+# test_mysql_connection.py
