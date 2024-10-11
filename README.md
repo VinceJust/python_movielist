@@ -3,6 +3,7 @@
 
 Was genau benötigt wird um das Script auszuführen ist in der requirements.txt aufgeführt.
 Außerdem benötigt man eine Datenbank auf die man zugreifen kann.
+____
 
 ### Datenbank Verbindung
 
@@ -36,4 +37,23 @@ try:
     conn.close()
 except mysql.connector.Error as err:
     print(f"Fehler: {err}")
+```
+
+### Enviroment Variables
+
+Wie man die Enviroment Variablen setzen kann, ist sonst auch in der env_variables.sh zu sehen.
+Dieses Script kann man mithilfe von ```vim env_variables.sh``` öffnen.
+Um es ausführbar zu machen muss man sonst die Datei Berechtigung unter Linux ändern mithilfe ```chmod 744 env_variables.sh```
+
+Das Script von env_variables.sh ist wie folgt:
+```bash
+#!/bin/bash
+export SQLIP="172.18.87.187"
+export SQL_USERNAME="python-admin"
+export SQL_PASSWORD="Kekse1234!"
+export SQL_DATABASE="Filmverwaltungsystem"
+echo $SQLIP
+echo $SQL_USERNAME
+echo $SQL_PASSWORD
+echo $SQL_DATABASE
 ```
