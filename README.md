@@ -1,11 +1,11 @@
-# Filmeverwaltung
-## Dies ist ein Script in Python das dazu dient die eigene Filme Sammlung in einer Datenbank zu speichern
+# Filmverwaltungssystem
+## Dies ist ein Script in Python, das dazu dient, die eigene Filmsammlung in einer Datenbank zu speichern.
 
-Was genau benötigt wird um das Script auszuführen ist in der requirements.txt aufgeführt.
-Außerdem benötigt man eine Datenbank auf die man zugreifen kann.
+Was genau benötigt wird, um das Script auszuführen, ist in der requirements.txt aufgeführt.
+Außerdem benötigt man eine Datenbank, auf die man zugreifen kann.
 ____
 
-### Datenbank erstellung
+### Datenbankerstellung
 
 Die Datenbank muss erstellt werden mit den folgenden Tabellen:
 * id int primary key auto_increment
@@ -15,7 +15,7 @@ Die Datenbank muss erstellt werden mit den folgenden Tabellen:
 * releaseyear int not null
 * rating float not null
 
-Hier ist ansonsten auch ein SQL Script um die Datenbank einfach zu erstellen und zu verwenden. Dies kann auch auf einem anderen Server oder einer anderen virtuellen Maschine passieren.
+Hier ist ansonsten auch ein SQL-Script, um die Datenbank einfach zu erstellen und zu verwenden. Dies kann auch auf einem anderen Server oder einer anderen virtuellen Maschine passieren.
 ```sql
 CREATE DATABASE IF NOT EXISTS Filmverwaltungsystem;
 
@@ -32,18 +32,18 @@ rating float NOT NULL
 
 DROP TABLE Filme;
 ```
-WARNUNG!: Solltet ihr die Tabelle anders erstellen müssen alle Variablen innerhalb des Scripts angepasst werden. Sonst funktioniert es nicht.
+WARNUNG!: Solltet ihr die Tabelle anders erstellen, müssen alle Variablen innerhalb des Scripts angepasst werden. Sonst funktioniert es nicht.
 
 ____
 
 ### Datenbank Verbindung
 
-Damit das Programm richtig läuft muss eine Datenbank Verbindung herstellt werden. Die Daten der Datenbank Verbindung können unter Linux in die .bashrc geschrieben werden im Home verzeichniss oder unter Windows als Globale Enviroment Variable gespeichert werden.
+Damit das Programm richtig läuft, muss eine Datenbankverbindung hergestellt werden. Die Daten der Datenbankverbindung können unter Linux in die .bashrc geschrieben werden, im Home Verzeichnis oder unter Windows als globale Enviroment Variable gespeichert werden.
 Alternativ können auch die Werte SQLIP, SQLUsername, SQLPassword und SQLDatabase mit den entsprechenden Daten verändert werden.
 
-Das Script öffnen könnt ihr unter Linux mit einem Konsolen Befehl ```python test_mysql_connection```
+Das Script öffnen könnt ihr unter Linux mit einem Konsolenbefehl ```python test_mysql_connection```
 
-Das Script für die Datenbank Verbindung sieht wie folgt aus:
+Das Script für die Datenbankverbindung sieht wie folgt aus:
 ```python
 import mysql.connector
 import os
@@ -75,7 +75,7 @@ ____
 
 Wie man die Enviroment Variablen setzen kann, ist sonst auch in der env_variables.sh zu sehen.
 Dieses Script kann man mithilfe von ```vim env_variables.sh``` öffnen.
-Um es ausführbar zu machen muss man sonst die Datei Berechtigung unter Linux ändern mithilfe ```chmod 744 env_variables.sh```
+Um es ausführbar zu machen, muss man sonst die Dateiberechtigung unter Linux mithilfe von  ```chmod 744 env_variables.sh``` ändern.
 
 Das Script von env_variables.sh ist wie folgt:
 ```bash
