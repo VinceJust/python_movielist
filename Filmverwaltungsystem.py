@@ -58,12 +58,12 @@ def update_movie():
             cursor.close()
             connection.close()
         
-        elif choice == "2":
+        elif choice == "2": # fixed director typo in line 66 since it was causing an error when updating the director
             connection = create_connection()
             cursor = connection.cursor()
             new_director = input("Wer ist der neue Director des Films?\n")
             cursor.execute('''
-                UPDATE movies SET direcotr = %s WHERE id = %s
+                UPDATE movies SET director = %s WHERE id = %s
             ''', (new_director, movie_id))
             connection.commit()
             print(f"Sie haben Erfolgreich den Director vom Film mit der Nummer {movie_id} geändert in {new_director}.")
@@ -126,13 +126,13 @@ def update_movie():
         else:
             print("Bitte wählen Sie nur zwischen 1, 2, 3, 4, 5, 6,  oder 7 aus.")
 
-def delete_movie():
+def delete_movie(): # replaced "name" with "title" in line 134 since there is no name column in the database
     connection = create_connection()
     cursor = connection.cursor()
     movie_name = input("Welchen Film möchtest du aus deiner Liste löschen? Bitte gib den Namen ein.\n")
     cursor.execute('''
-        DELETE FROM movies WHERE name = %s
-        ''', (movie_name))
+        DELETE FROM movies WHERE title = %s
+        ''', (movie_name,)) # added , after movie_name to make it a tuple which ensures compatibility with with the cursor.exucute method
     connection.commit()
     print(f"Der Film {movie_name} wurde aus deiner Filmliste entfernt.")
     cursor.close()
