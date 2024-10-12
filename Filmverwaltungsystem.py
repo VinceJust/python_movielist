@@ -10,10 +10,9 @@ def add_movie():
     genre = input("Welchem Genre gehört der Film an?\n")
     releaseyear = int(input("In welchem Jahr wurde der Film veröffentlicht?\n"))
     rating = float(input("Mit welchem Rating versiehst du den Film? Bitte gebe eine Nachkommazahl mit einem . als trennung an.\n"))
-    cursor.execute('''
-        INSERT INTO movies (title, director, genre, releaseyear, rating)
-        VALUES (%s, %s, %s, %s, %s)
-        ''', (title, director, genre, releaseyear, rating,))
+    sql = f"INSERT INTO movies (title, director, genre, releaseyear, rating)
+        VALUES (%s, %s, %s, %s, %s)"
+    cursor.execute(sql, (title, director, genre, releaseyear, rating,))
     connection.commit()
     print(f"Der Film {title} vom Regisseur {director} aus dem Genre {genre} aus dem Jahr {releaseyear} wurde mit einer Wertung von {rating} deiner Filmsammlung hinzugefügt")
     cursor.close()
@@ -50,9 +49,8 @@ def update_movie():
             connection = create_connection()
             cursor = connection.cursor()
             new_title = input("Wie soll der neue Title heißen?\n")
-            cursor.execute('''
-                UPDATE movies SET title = %s WHERE id = %s
-                ''', (new_title, movie_id))
+            sql = f"UPDATE movies SET title = %s WHERE id = %s"
+            cursor.execute(sql, (new_title, movie_id))
             connection.commit()
             print(f"Der neue Titel vom Film mit der ID {movie_id} lautet {new_title}.")
             cursor.close()
@@ -62,9 +60,8 @@ def update_movie():
             connection = create_connection()
             cursor = connection.cursor()
             new_director = input("Wer ist der neue Director des Films?\n")
-            cursor.execute('''
-                UPDATE movies SET director = %s WHERE id = %s
-            ''', (new_director, movie_id))
+            sql = f"UPDATE movies SET director = %s WHERE id = %s"
+            cursor.execute(sql, (new_director, movie_id))
             connection.commit()
             print(f"Sie haben Erfolgreich den Director vom Film mit der Nummer {movie_id} geändert in {new_director}.")
             cursor.close()
@@ -74,19 +71,19 @@ def update_movie():
             connection = create_connection()
             cursor = connection.cursor()
             new_genre = input("Wie lautet das neue Genre?\n")
-            cursor.execute('''
-                UPDATE movies SET genre = %s WHERE id = %s
-            ''', (new_genre, movie_id))
+            sql = f"UPDATE movies SET genre = %s WHERE id = %s"
+            cursor.execute(sql, (new_genre, movie_id))
             connection.commit()
             print(f"Sie haben Erfolgreich das Genre vom Film mit der Nummer {movie_id} geändert in {new_genre}.")
             cursor.close()
             connection.close()
 
         elif choice == "4":
+            connection = create_connection()
+            cursor = connection.cursor()
             new_year = int(input("Wie lautet das neue Erscheinungsdatum?\n"))
-            cursor.execute('''
-                UPDATE movies SET releaseyear = %s WHERE id = %s
-            ''', (new_year, movie_id))
+            sql = f"UPDATE movies SET releaseyear = %s WHERE id = %s"
+            cursor.execute(sql, (new_year, movie_id))
             connection.commit()
             print(f"Sie haben Erfolgreich das Erscheinungsjahr vom Film mit der Nummer {movie_id} geändert in {new_year}.")
             cursor.close()
@@ -96,9 +93,8 @@ def update_movie():
             connection = create_connection()
             cursor = connection.cursor()
             new_rating = float(input("Wie hoch ist die neue Bewertung des Films?\n"))
-            cursor.execute('''
-                UPDATE movies SET rating = %s WHERE id = %s
-            ''', (new_rating, movie_id))
+            sql = f"UPDATE movies SET rating = %s WHERE id = %s"
+            cursor.execute(sql, (new_rating, movie_id))
             connection.commit()
             print(f"Sie haben Erfolgreich das Rating vom Film mit der Nummer {movie_id} geändert in {new_rating}.")
             cursor.close()
@@ -112,9 +108,8 @@ def update_movie():
             new_genre = input("Wie lautet das neue Genre?\n")
             new_year = int(input("Wie lautet das neue Erscheinungsdatum?\n"))
             new_rating = float(input("Wie Stufen Sie den Film nun ein?\n"))
-            cursor.execute('''
-                UPDATE movies SET title = %s, director = %s, genre = %s, releaseyear = %s, rating = %s WHERE id = %s
-            ''', (new_title, new_director, new_genre, new_year, new_rating, movie_id))
+            sql = f"UPDATE movies SET title = %s, director = %s, genre = %s, releaseyear = %s, rating = %s WHERE id = %s"
+            cursor.execute(sql, (new_title, new_director, new_genre, new_year, new_rating, movie_id))
             connection.commit()
             cursor.close()
             connection.close()
@@ -129,21 +124,29 @@ def update_movie():
 def delete_movie(): # replaced "name" with "title" in line 134 since there is no name column in the database
     connection = create_connection()
     cursor = connection.cursor()
+    show_movies()
     movie_name = input("Welchen Film möchtest du aus deiner Liste löschen? Bitte gib den Namen ein.\n")
-    cursor.execute('''
-        DELETE FROM movies WHERE title = %s
-        ''', (movie_name,)) # added , after movie_name to make it a tuple which ensures compatibility with with the cursor.exucute method
+    movie_name = f"%{movie_name}%"
+    sql = f"DELETE FROM movies WHERE title like %s"
+    cursor.execute(sql, (movie_name,)) # added , after movie_name to make it a tuple which ensures compatibility with with the cursor.exucute method
     connection.commit()
     print(f"Der Film {movie_name} wurde aus deiner Filmliste entfernt.")
     cursor.close()
     connection.close()
 
 def search_movie():
-    kriterium = input("Nach welchem Kriterium möchtest du suchen?\n")
+    while True:
+        print("Die Kriterien nach denen du suchen kannst wäre: id, title, director, genre, releaseyear oder rating")
+        kriterium = input("Nach welchem Kriterium möchtest du suchen?\n")
+        if kriterium == "id" or kriterium == "title" or kriterium == "director" or kriterium == "genre" or kriterium == "releaseyear" or kriterium == "rating":
+            break
+        else:
+            print("Bitte gib nur eines der vorhandenen Kriterien ein.")
     wert = input("Nach was möchtest du Suchen?\n")
+    wert = f"%{wert}%"
     connection = create_connection()
     cursor = connection.cursor()
-    sql = f"SELECT * FROM movies WHERE {kriterium} = %s"
+    sql = f"SELECT * FROM movies WHERE {kriterium} LIKE %s"
     cursor.execute(sql, (wert,))
     result = cursor.fetchall()
     for i in result:
