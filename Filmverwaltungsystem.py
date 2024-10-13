@@ -10,8 +10,10 @@ def add_movie():
     genre = input("Welchem Genre gehört der Film an?\n")
     releaseyear = int(input("In welchem Jahr wurde der Film veröffentlicht?\n"))
     rating = float(input("Mit welchem Rating versiehst du den Film? Bitte gebe eine Nachkommazahl mit einem . als trennung an.\n"))
-    sql = f"INSERT INTO movies (title, director, genre, releaseyear, rating)
-        VALUES (%s, %s, %s, %s, %s)"
+    sql = ( 
+        "INSERT INTO movies (title, director, genre, releaseyear, rating)" # fixed syntax 
+        "VALUES (%s, %s, %s, %s, %s)"
+    )
     cursor.execute(sql, (title, director, genre, releaseyear, rating,))
     connection.commit()
     print(f"Der Film {title} vom Regisseur {director} aus dem Genre {genre} aus dem Jahr {releaseyear} wurde mit einer Wertung von {rating} deiner Filmsammlung hinzugefügt")
@@ -125,12 +127,11 @@ def delete_movie(): # replaced "name" with "title" in line 134 since there is no
     connection = create_connection()
     cursor = connection.cursor()
     show_movies()
-    movie_name = input("Welchen Film möchtest du aus deiner Liste löschen? Bitte gib den Namen ein.\n")
-    movie_name = f"%{movie_name}%"
-    sql = f"DELETE FROM movies WHERE title like %s"
-    cursor.execute(sql, (movie_name,)) # added , after movie_name to make it a tuple which ensures compatibility with with the cursor.exucute method
+    movie_id= input("Welchen Film möchtest du aus deiner Liste löschen? Bitte gib die Film-ID ein.\n")
+    sql = f"DELETE FROM movies WHERE id = %s" # replaced "title" with "id", this allows for deleting specific movies instead of all movies with the same title
+    cursor.execute(sql, (movie_id,)) # added , after movie_name to make it a tuple which ensures compatibility with with the cursor.exucute method
     connection.commit()
-    print(f"Der Film {movie_name} wurde aus deiner Filmliste entfernt.")
+    print(f"Der Film mit der ID {movie_id} wurde aus deiner Filmliste entfernt.")
     cursor.close()
     connection.close()
 
